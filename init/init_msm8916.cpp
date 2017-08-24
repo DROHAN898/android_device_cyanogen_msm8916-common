@@ -1,6 +1,5 @@
 /*
    Copyright (c) 2016, The CyanogenMod Project
-
    Redistribution and use in source and binary forms, with or without
    modification, are permitted provided that the following conditions are
    met:
@@ -13,7 +12,6 @@
     * Neither the name of The Linux Foundation nor the names of its
       contributors may be used to endorse or promote products derived
       from this software without specific prior written permission.
-
    THIS SOFTWARE IS PROVIDED "AS IS" AND ANY EXPRESS OR IMPLIED
    WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
    MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT
@@ -35,14 +33,18 @@
 #include <sys/types.h>
 
 #include <android-base/strings.h>
-
-#include "vendor_init.h"
+#include <android-base/file.h>
+#include <android-base/properties.h>
 #include "property_service.h"
+#include "vendor_init.h"
 #include "log.h"
 #include "util.h"
 
 #include "init_msm8916.h"
 
+using android::base::GetProperty;
+using android::base::ReadFileToString;
+using android::init::property_set;
 using android::base::Trim;
 
 __attribute__ ((weak))
@@ -56,10 +58,10 @@ static void init_alarm_boot_properties()
     char const *power_off_alarm_file = "/persist/alarm/powerOffAlarmSet";
     std::string boot_reason;
     std::string power_off_alarm;
-    std::string tmp = property_get("ro.boot.alarmboot");
+    std::string tmp = GetProperty("ro.boot.alarmboot","");
 
-    if (read_file(boot_reason_file, &boot_reason)
-            && read_file(power_off_alarm_file, &power_off_alarm)) {
+    if (ReadFileToString(boot_reason_file, &boot_reason)
+            && ReadFileToString(power_off_alarm_file, &power_off_alarm)) {
         /*
          * Setup ro.alarm_boot value to true when it is RTC triggered boot up
          * For existing PMIC chips, the following mapping applies
