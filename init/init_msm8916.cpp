@@ -34,6 +34,7 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 
+#include <android-base/logging.h>
 #include <android-base/properties.h>
 #include "property_service.h"
 #include "vendor_init.h"
@@ -94,9 +95,9 @@ static void init_alarm_boot_properties()
          * 8 -> KPDPWR_N pin toggled (power key pressed)
          */
         if (buf[0] == '3' || tmp == "true")
-            property_set("ro.alarm_boot", "true");
+            android::init::property_set("ro.alarm_boot", "true");
         else
-            property_set("ro.alarm_boot", "false");
+            android::init::property_set("ro.alarm_boot", "false");
     }
 }
 
