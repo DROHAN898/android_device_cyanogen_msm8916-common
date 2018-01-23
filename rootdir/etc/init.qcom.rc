@@ -47,6 +47,9 @@ on init
 
     symlink /sdcard /storage/sdcard0
 
+    # Allow ril to access /proc/cmdline
+    chmod 0644 /proc/cmdline
+
 on fs
     wait /dev/block/platform/soc.0/${ro.boot.bootdevice}
     symlink /dev/block/platform/soc.0/${ro.boot.bootdevice} /dev/block/bootdevice
